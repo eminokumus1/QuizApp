@@ -18,5 +18,9 @@
         android:id="@+id/quizFragment"
         android:name="com.eminokumus.quizapp.quiz.QuizFragment"
         android:label="fragment_quiz"
-        tools:layout="@layout/fragment_quiz" />
+        tools:layout="@layout/fragment_quiz" >
+        <argument
+            android:name="quiz"
+            app:argType="com.eminokumus.quizapp.vo.Quiz" />
+    </fragment>
 </navigation>
