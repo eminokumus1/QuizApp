@@ -6,6 +6,9 @@
 
     <data>
 
+        <variable
+            name="question"
+            type="com.eminokumus.quizapp.vo.Question" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,75 +16,86 @@
         android:layout_height="match_parent">
 
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/questionText"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
-        android:autoSizeMaxTextSize="20sp"
-        android:autoSizeMinTextSize="14sp"
-        android:autoSizeTextType="uniform"
-        android:background="@drawable/bg_rounded_soft"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp"
-        tools:text="QUESTION" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/questionText"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="8dp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeMinTextSize="14sp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/bg_rounded_soft"
+            android:gravity="center"
+            android:text="@{question.questionLine}"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="8dp"
+            tools:text="QUESTION" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@id/questionText">
+
+            <RadioButton
+                android:id="@+id/firstAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_rounded_soft"
+                android:text="@{question.answers.get(0)}"
+                android:textColor="@color/white"
+                app:buttonTint="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/questionText"
+                tools:layout_editor_absoluteX="8dp"
+                tools:text="Answer 1" />
+
+            <RadioButton
+                android:id="@+id/secondAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_rounded_soft"
+                android:text="@{question.answers.get(1)}"
+                android:textColor="@color/white"
+                app:buttonTint="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/firstAnswer"
+                tools:text="Answer 2" />
+
+            <RadioButton
+                android:id="@+id/thirdAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_rounded_soft"
+                android:text="@{question.answers.get(2)}"
+                android:textColor="@color/white"
+                app:buttonTint="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/secondAnswer"
+                tools:text="Answer 3" />
+
+            <RadioButton
+                android:id="@+id/fourthAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_rounded_soft"
+                android:text="@{question.answers.get(3)}"
+                android:textColor="@color/white"
+                app:buttonTint="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/thirdAnswer"
+                tools:text="Answer 4" />
 
 
-    <CheckBox
-        android:id="@+id/firstAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/bg_rounded_soft"
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/questionText"
-        tools:layout_editor_absoluteX="8dp"
-        tools:text="Answer 1" />
+        </RadioGroup>
 
-    <CheckBox
-        android:id="@+id/secondAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/bg_rounded_soft"
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/firstAnswer"
-        tools:text="Answer 2" />
-
-    <CheckBox
-        android:id="@+id/thirdAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/bg_rounded_soft"
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/secondAnswer"
-        tools:text="Answer 3" />
-
-    <CheckBox
-        android:id="@+id/fourthAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/bg_rounded_soft"
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/thirdAnswer"
-        tools:text="Answer 4" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
