@@ -9,6 +9,12 @@ import com.eminokumus.quizapp.vo.Quiz
 class QuizzesAdapter : RecyclerView.Adapter<QuizzesAdapter.MyViewHolder>() {
 
     var dataList = listOf<Quiz>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var onQuizItemClickListener: OnQuizItemClickListener? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -18,20 +24,28 @@ class QuizzesAdapter : RecyclerView.Adapter<QuizzesAdapter.MyViewHolder>() {
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = dataList[position]
-        holder.bind(item)
+        holder.bind(item, onQuizItemClickListener)
     }
 
     override fun getItemCount(): Int {
         return dataList.size
     }
 
-    inner class MyViewHolder(var binding: ItemQuizzesBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(quiz: Quiz){
+     class MyViewHolder(private var binding: ItemQuizzesBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(quiz: Quiz, onQuizItemClickListener: OnQuizItemClickListener?){
             binding.quizNameText.text = quiz.name
+
+            binding.root.setOnClickListener {
+                onQuizItemClickListener?.onClick(quiz)
+            }
         }
 
     }
 
 
+
+}
+
+interface OnQuizItemClickListener {
+    fun onClick(quiz: Quiz)
 }

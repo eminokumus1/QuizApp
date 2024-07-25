@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.eminokumus.quizapp.vo.Question
 import com.eminokumus.quizapp.vo.Quiz
+import javax.inject.Inject
 
-class QuizzesViewModel : ViewModel() {
+class QuizzesViewModel @Inject constructor() : ViewModel() {
 
     private val _quizList = MutableLiveData<List<Quiz>>()
     val quizList: LiveData<List<Quiz>> get() = _quizList
