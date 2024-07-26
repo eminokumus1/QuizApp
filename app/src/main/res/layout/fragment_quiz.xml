@@ -7,38 +7,56 @@
     <data>
 
         <variable
-            name="question"
-            type="com.eminokumus.quizapp.vo.Question" />
+            name="viewModel"
+            type="com.eminokumus.quizapp.quiz.QuizViewModel" />
+
+<!--                <variable-->
+<!--                    name="question"-->
+<!--                    type="com.eminokumus.quizapp.vo.Question" />-->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="80dp"
+            android:text="@{@string/score + viewModel.score}"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/score" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/questionText"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:autoSizeMaxTextSize="20sp"
             android:autoSizeMinTextSize="14sp"
             android:autoSizeTextType="uniform"
             android:background="@drawable/bg_rounded_soft"
             android:gravity="center"
-            android:text="@{question.questionLine}"
+            android:text="@{viewModel.question.questionLine}"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scoreText"
             tools:layout_editor_absoluteX="8dp"
             tools:text="QUESTION" />
 
         <RadioGroup
+            android:id="@+id/answersRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -50,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/bg_rounded_soft"
-                android:text="@{question.answers.get(0)}"
+                android:text="@{viewModel.question.answers.get(0)}"
                 android:textColor="@color/white"
                 app:buttonTint="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/questionText"
@@ -63,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/bg_rounded_soft"
-                android:text="@{question.answers.get(1)}"
+                android:text="@{viewModel.question.answers.get(1)}"
                 android:textColor="@color/white"
                 app:buttonTint="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/firstAnswer"
@@ -75,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/bg_rounded_soft"
-                android:text="@{question.answers.get(2)}"
+                android:text="@{viewModel.question.answers.get(2)}"
                 android:textColor="@color/white"
                 app:buttonTint="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/secondAnswer"
@@ -87,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/bg_rounded_soft"
-                android:text="@{question.answers.get(3)}"
+                android:text="@{viewModel.question.answers.get(3)}"
                 android:textColor="@color/white"
                 app:buttonTint="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/thirdAnswer"
@@ -95,6 +113,18 @@
 
 
         </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_rounded"
+            android:text="Next"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/answersRadioGroup" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
