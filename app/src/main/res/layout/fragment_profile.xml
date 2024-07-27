@@ -16,8 +16,8 @@
 
         <TextView
             android:id="@+id/userEmailText"
-            android:hint="@string/email_phone_number"
-            android:textColorHint="@color/white"
+            android:hint="@string/email"
+            android:textColorHint="E4E3E3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{viewModel.userEmail}"
@@ -30,8 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/soft_blue"
-            tools:text="email@email.com"/>
+            android:background="@color/soft_blue"/>
 
         <TextView
             android:id="@+id/usernameText"
@@ -42,7 +41,7 @@
             android:textColor="@color/white"
             android:textAlignment="center"
             android:background="@color/soft_blue"
-            android:hint="username"
+            android:hint="@string/username"
             android:textColorHint="#E4E3E3"
             app:layout_constraintTop_toBottomOf="@id/userEmailText"
             android:layout_marginTop="20dp"
@@ -53,7 +52,7 @@
             android:id="@+id/settingsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="settings"
+            android:text="@string/settings"
             app:layout_constraintTop_toBottomOf="@id/usernameText"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="40dp"

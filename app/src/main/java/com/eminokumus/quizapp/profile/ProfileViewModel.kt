@@ -1,5 +1,6 @@
 package com.eminokumus.quizapp.profile
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,18 +18,25 @@ class ProfileViewModel @Inject constructor() : ViewModel() {
 
     private val password = MutableLiveData<String>()
 
-    
 
-    fun changeUserEmail(newEmail: String){
+    fun changeUserEmail(newEmail: String) {
         _userEmail.value = newEmail
     }
 
-    fun changeUsername(newUsername: String){
+    fun changeUsername(newUsername: String) {
         _username.value = newUsername
     }
 
-    fun changePassword(newPassword: String){
+    fun changePassword(newPassword: String) {
         password.value = newPassword
+    }
+
+    fun isEmailValid(email: String): Boolean{
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    fun isPasswordValid(userPassword: String): Boolean{
+        return userPassword.length >= 6
     }
 
 }

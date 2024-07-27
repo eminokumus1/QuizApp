@@ -19,4 +19,7 @@
     <string name="change_email">Change Email</string>
     <string name="change_username">Change Username</string>
     <string name="change_password">Change Password</string>
+    <string name="settings">settings</string>
+    <string name="username">username</string>
+    <string name="email">Email</string>
 </resources>

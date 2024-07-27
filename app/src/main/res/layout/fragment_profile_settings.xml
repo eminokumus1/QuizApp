@@ -6,6 +6,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".profile.ProfileSettingsFragment">
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background ="@android:color/transparent"
+        android:src="@drawable/ic_back_arrow"
+        android:layout_margin="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/changeEmailField"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
@@ -107,6 +117,8 @@
         android:padding="4dp"
         app:layout_constraintTop_toBottomOf="@id/changePasswordField"
         app:layout_constraintEnd_toEndOf="@id/changePasswordField"/>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

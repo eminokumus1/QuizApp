@@ -7,7 +7,9 @@ import com.eminokumus.quizapp.profile.ProfileFragment
 import com.eminokumus.quizapp.profile.ProfileSettingsFragment
 import com.eminokumus.quizapp.quiz.QuizFragment
 import dagger.Component
+import javax.inject.Singleton
 
+@Singleton
 @Component
 interface AppComponent {
 

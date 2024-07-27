@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.eminokumus.quizapp.MainActivity
-import com.eminokumus.quizapp.R
 import com.eminokumus.quizapp.databinding.FragmentProfileSettingsBinding
 import javax.inject.Inject
 
@@ -27,7 +27,7 @@ class ProfileSettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentProfileSettingsBinding.inflate(layoutInflater, container, false)
 
         return binding.root
@@ -43,27 +43,33 @@ class ProfileSettingsFragment : Fragment() {
         binding.run {
             changeEmailBtn.setOnClickListener {
                 val newEmail = binding.changeEmailEditText.text.toString()
-                if (newEmail.isNotEmpty()){
+                if (viewModel.isEmailValid(newEmail)) {
                     viewModel.changeUserEmail(newEmail)
-                    Toast.makeText(requireContext(),"Email changed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Email changed", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(requireContext(), "Invalid email", Toast.LENGTH_SHORT).show()
                 }
             }
             changeUsernameBtn.setOnClickListener {
                 val newUsername = binding.changeUsernameEditText.text.toString()
-                if (newUsername.isNotEmpty()){
+                if (newUsername.isNotEmpty()) {
                     viewModel.changeUsername(newUsername)
-                    Toast.makeText(requireContext(),"Username changed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Username changed", Toast.LENGTH_SHORT).show()
                 }
             }
             changePasswordBtn.setOnClickListener {
                 val newPassword = binding.changePasswordEditText.text.toString()
-                if (newPassword.isNotEmpty()){
+                if (viewModel.isPasswordValid(newPassword)) {
                     viewModel.changePassword(newPassword)
                     Toast.makeText(requireContext(), "Password changed", Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(requireContext(), "Minimum password length is 6", Toast.LENGTH_SHORT).show()
                 }
             }
+            backButton.setOnClickListener {
+                findNavController().navigate(ProfileSettingsFragmentDirections.actionProfileSettingsFragmentToProfileFragment())
+            }
         }
-
 
 
     }
