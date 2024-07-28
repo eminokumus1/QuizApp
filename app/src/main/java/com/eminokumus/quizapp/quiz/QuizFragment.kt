@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.eminokumus.quizapp.MainActivity
@@ -26,6 +25,9 @@ class QuizFragment : Fragment() {
     private val args: QuizFragmentArgs by navArgs()
 
     private val handler = Handler(Looper.getMainLooper())
+
+    var checkedButton: View? = null
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -65,6 +67,7 @@ class QuizFragment : Fragment() {
 
     }
 
+
     private fun isListEndedObserver(it: View) {
         viewModel.isListEnded.observe(viewLifecycleOwner) { isEnded ->
             if (isEnded && findNavController().currentDestination?.id == R.id.quizFragment) {
@@ -78,6 +81,8 @@ class QuizFragment : Fragment() {
         }
         checkAnswer()
         it.isClickable = false
+        binding.answersRadioGroup.clearCheck()
+
         handler.postDelayed({
             viewModel.updateQuestion()
             it.isClickable = true
@@ -87,17 +92,87 @@ class QuizFragment : Fragment() {
     private fun checkAnswer() {
         val checkedId = binding.answersRadioGroup.checkedRadioButtonId
         when (checkedId) {
-            binding.firstAnswer.id -> viewModel.updateAnswer(binding.firstAnswer.text.toString())
-            binding.secondAnswer.id -> viewModel.updateAnswer(binding.secondAnswer.text.toString())
-            binding.thirdAnswer.id -> viewModel.updateAnswer(binding.thirdAnswer.text.toString())
-            binding.fourthAnswer.id -> viewModel.updateAnswer(binding.fourthAnswer.text.toString())
+            binding.firstAnswer.id -> {
+                viewModel.updateAnswer(binding.firstAnswer.text.toString())
+                checkedButton = binding.firstAnswer
+            }
+
+            binding.secondAnswer.id -> {
+                viewModel.updateAnswer(binding.secondAnswer.text.toString())
+                checkedButton = binding.secondAnswer
+            }
+
+            binding.thirdAnswer.id -> {
+                viewModel.updateAnswer(binding.thirdAnswer.text.toString())
+                checkedButton = binding.thirdAnswer
+            }
+
+            binding.fourthAnswer.id -> {
+                viewModel.updateAnswer(binding.fourthAnswer.text.toString())
+                checkedButton = binding.fourthAnswer
+            }
         }
         if (viewModel.isAnswerCorrect()) {
-
-            Toast.makeText(context, "Correct", Toast.LENGTH_SHORT).show()
+            changeTrueButtonColors(checkedButton)
             viewModel.updateScore()
         } else
-            Toast.makeText(context, "Wrong", Toast.LENGTH_SHORT).show()
+            changeFalseButtonColors(checkedButton)
+    }
+
+    private fun changeTrueButtonColors(checkedButton: View?) {
+        if (checkedButton != null){
+            makeViewGreen(checkedButton)
+            handler.postDelayed({
+                makeViewSoftBlue(checkedButton)
+
+            }, 500)
+        }
+
+
+    }
+
+    private fun changeFalseButtonColors(checkedButton: View?) {
+        if (checkedButton != null){
+            makeViewRed(checkedButton)
+        }
+        var correctAnswer = binding.firstAnswer
+        when (viewModel.findCorrectAnswerIndex()) {
+            0 -> {
+                correctAnswer = binding.firstAnswer
+                makeViewGreen(correctAnswer)
+            }
+            1 -> {
+                correctAnswer = binding.secondAnswer
+                makeViewGreen(correctAnswer)
+            }
+            2 -> {
+                correctAnswer = binding.thirdAnswer
+                makeViewGreen(correctAnswer)
+
+            }
+            3 -> {
+                correctAnswer = binding.fourthAnswer
+                makeViewGreen(correctAnswer)
+            }
+        }
+        handler.postDelayed({
+            if (checkedButton != null){
+                makeViewSoftBlue(checkedButton)
+            }
+            makeViewSoftBlue(correctAnswer)
+        }, 500)
+
+
+    }
+
+    private fun makeViewGreen(view: View){
+        view.setBackgroundResource(R.drawable.bg_rounded_green)
+    }
+    private fun makeViewRed(view: View){
+        view.setBackgroundResource(R.drawable.bg_rounded_red)
+    }
+    private fun makeViewSoftBlue(view: View){
+        view.setBackgroundResource(R.drawable.bg_rounded_soft)
     }
 
 

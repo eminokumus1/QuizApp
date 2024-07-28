@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.eminokumus.quizapp.MainActivity
-import com.eminokumus.quizapp.R
 import com.eminokumus.quizapp.databinding.FragmentQuizzesBinding
 import com.eminokumus.quizapp.vo.Quiz
 import javax.inject.Inject

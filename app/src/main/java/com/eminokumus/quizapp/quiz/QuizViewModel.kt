@@ -21,6 +21,8 @@ class QuizViewModel @Inject constructor() : ViewModel() {
 
     private var answer = ""
 
+    private var answerList = mutableListOf<String>()
+
     var questionIndex = 0
 
     var questionList = listOf<Question>()
@@ -45,10 +47,21 @@ class QuizViewModel @Inject constructor() : ViewModel() {
 
     fun updateAnswer(givenAnswer: String){
         answer = givenAnswer
+        answerList.add(givenAnswer)
     }
 
     fun isAnswerCorrect(): Boolean{
         return answer == question.value?.correctAnswer
+    }
+
+    fun findCorrectAnswerIndex(): Int{
+        when(question.value?.correctAnswer){
+            question.value?.answers?.get(0) -> return 0
+            question.value?.answers?.get(1) -> return 1
+            question.value?.answers?.get(2) -> return 2
+            question.value?.answers?.get(3) -> return 3
+        }
+        return -1
     }
 
 

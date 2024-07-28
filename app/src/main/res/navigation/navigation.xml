@@ -45,10 +45,14 @@
             android:defaultValue="0" />
         <action
             android:id="@+id/action_scoreFragment_to_quizFragment"
-            app:destination="@id/quizFragment" />
+            app:destination="@id/quizFragment"
+            app:popUpTo="@id/scoreFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_scoreFragment_to_quizzesFragment"
-            app:destination="@id/quizzesFragment" />
+            app:destination="@id/quizzesFragment"
+            app:popUpTo="@id/quizzesFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="quiz"
             app:argType="com.eminokumus.quizapp.vo.Quiz" />
