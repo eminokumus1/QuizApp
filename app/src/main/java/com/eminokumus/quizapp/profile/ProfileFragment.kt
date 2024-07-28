@@ -37,10 +37,19 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.settingsButton.setOnClickListener {
-            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileSettingsFragment())
-        }
+        setOnClickListeners()
 
+    }
+
+    private fun setOnClickListeners() {
+        binding.run {
+            settingsButton.setOnClickListener {
+                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileSettingsFragment())
+            }
+            solvedQuizzesBtn.setOnClickListener {
+
+            }
+        }
     }
 
 
