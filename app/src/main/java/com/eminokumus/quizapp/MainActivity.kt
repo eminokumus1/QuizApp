@@ -2,10 +2,12 @@ package com.eminokumus.quizapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.eminokumus.quizapp.databinding.ActivityMainBinding
 import com.eminokumus.quizapp.di.AppComponent
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +31,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottombar.setupWithNavController(navController)
 
+        bottomNavItemChangeListener(binding.bottombar, navController)
+
+
+    }
+
+    private fun bottomNavItemChangeListener(bottombar: BottomNavigationView, navController: NavController){
+        bottombar.setOnItemSelectedListener { item->
+            if (item.itemId != bottombar.selectedItemId){
+                navController.popBackStack(item.itemId, true, saveState = false)
+                navController.navigate(item.itemId)
+            }
+            true
+        }
     }
 
 
