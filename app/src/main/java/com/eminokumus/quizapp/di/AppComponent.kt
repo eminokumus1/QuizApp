@@ -6,6 +6,7 @@ import com.eminokumus.quizapp.login.LoginActivity
 import com.eminokumus.quizapp.profile.ProfileFragment
 import com.eminokumus.quizapp.profile.ProfileSettingsFragment
 import com.eminokumus.quizapp.quiz.QuizFragment
+import com.eminokumus.quizapp.solvedquizdetails.SolvedQuizDetailsFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -19,4 +20,5 @@ interface AppComponent {
     fun inject(fragment: QuizFragment)
     fun inject(fragment: ProfileFragment)
     fun inject(fragment: ProfileSettingsFragment)
+    fun inject(fragment: SolvedQuizDetailsFragment)
 }

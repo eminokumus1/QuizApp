@@ -15,7 +15,15 @@
             app:destination="@id/quizFragment" />
         <action
             android:id="@+id/action_quizzesFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment" />
+        <argument
+            android:name="screenType"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_quizzesFragment_to_solvedQuizDetailsFragment"
+            app:destination="@id/solvedQuizDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/quizFragment"
@@ -64,7 +72,8 @@
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileFragment_to_quizzesFragment"
-            app:destination="@id/quizzesFragment" />
+            app:destination="@id/quizzesFragment"
+            app:popUpTo="@id/quizzesFragment" />
         <action
             android:id="@+id/action_profileFragment_to_profileSettingsFragment"
             app:destination="@id/profileSettingsFragment" />
@@ -76,6 +85,16 @@
         tools:layout="@layout/fragment_profile_settings" >
         <action
             android:id="@+id/action_profileSettingsFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/solvedQuizDetailsFragment"
+        android:name="com.eminokumus.quizapp.solvedquizdetails.SolvedQuizDetailsFragment"
+        android:label="fragment_solved_quiz_details"
+        tools:layout="@layout/fragment_solved_quiz_details" >
+        <argument
+            android:name="solvedQuiz"
+            app:argType="com.eminokumus.quizapp.vo.SolvedQuiz" />
     </fragment>
 </navigation>
