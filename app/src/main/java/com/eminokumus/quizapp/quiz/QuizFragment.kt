@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.eminokumus.quizapp.MyDatabase
 import com.eminokumus.quizapp.MainActivity
 import com.eminokumus.quizapp.R
 import com.eminokumus.quizapp.databinding.FragmentQuizBinding
+import com.eminokumus.quizapp.solvedquizdetails.QuestionStatus
+import com.eminokumus.quizapp.vo.SolvedQuiz
 import javax.inject.Inject
 
 
@@ -21,6 +24,9 @@ class QuizFragment : Fragment() {
 
     @Inject
     lateinit var viewModel: QuizViewModel
+
+    @Inject
+    lateinit var myDatabase: MyDatabase
 
     private val args: QuizFragmentArgs by navArgs()
 
@@ -71,6 +77,8 @@ class QuizFragment : Fragment() {
     private fun isListEndedObserver(it: View) {
         viewModel.isListEnded.observe(viewLifecycleOwner) { isEnded ->
             if (isEnded && findNavController().currentDestination?.id == R.id.quizFragment) {
+                val solvedQuiz = SolvedQuiz(args.quiz.name, viewModel.getSolvedQuestionList())
+                myDatabase.addSolvedQuizToList(solvedQuiz)
                 findNavController().navigate(
                     QuizFragmentDirections.actionQuizFragmentToScoreFragment(
                         args.quiz,
@@ -113,14 +121,21 @@ class QuizFragment : Fragment() {
             }
         }
         if (viewModel.isAnswerCorrect()) {
+            viewModel.updateQuestionStatus(QuestionStatus.CORRECT)
+            viewModel.addSolvedQuestionToList()
             changeTrueButtonColors(checkedButton)
             viewModel.updateScore()
-        } else
+        } else {
+            viewModel.updateQuestionStatus(QuestionStatus.WRONG)
+            viewModel.addSolvedQuestionToList()
             changeFalseButtonColors(checkedButton)
+        }
+        checkedButton = null
+
     }
 
     private fun changeTrueButtonColors(checkedButton: View?) {
-        if (checkedButton != null){
+        if (checkedButton != null) {
             makeViewGreen(checkedButton)
             handler.postDelayed({
                 makeViewSoftBlue(checkedButton)
@@ -132,7 +147,7 @@ class QuizFragment : Fragment() {
     }
 
     private fun changeFalseButtonColors(checkedButton: View?) {
-        if (checkedButton != null){
+        if (checkedButton != null) {
             makeViewRed(checkedButton)
         }
         var correctAnswer = binding.firstAnswer
@@ -141,22 +156,25 @@ class QuizFragment : Fragment() {
                 correctAnswer = binding.firstAnswer
                 makeViewGreen(correctAnswer)
             }
+
             1 -> {
                 correctAnswer = binding.secondAnswer
                 makeViewGreen(correctAnswer)
             }
+
             2 -> {
                 correctAnswer = binding.thirdAnswer
                 makeViewGreen(correctAnswer)
 
             }
+
             3 -> {
                 correctAnswer = binding.fourthAnswer
                 makeViewGreen(correctAnswer)
             }
         }
         handler.postDelayed({
-            if (checkedButton != null){
+            if (checkedButton != null) {
                 makeViewSoftBlue(checkedButton)
             }
             makeViewSoftBlue(correctAnswer)
@@ -165,13 +183,15 @@ class QuizFragment : Fragment() {
 
     }
 
-    private fun makeViewGreen(view: View){
+    private fun makeViewGreen(view: View) {
         view.setBackgroundResource(R.drawable.bg_rounded_green)
     }
-    private fun makeViewRed(view: View){
+
+    private fun makeViewRed(view: View) {
         view.setBackgroundResource(R.drawable.bg_rounded_red)
     }
-    private fun makeViewSoftBlue(view: View){
+
+    private fun makeViewSoftBlue(view: View) {
         view.setBackgroundResource(R.drawable.bg_rounded_soft)
     }
 

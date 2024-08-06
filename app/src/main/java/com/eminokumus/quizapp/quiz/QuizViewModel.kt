@@ -3,7 +3,9 @@ package com.eminokumus.quizapp.quiz
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.eminokumus.quizapp.solvedquizdetails.QuestionStatus
 import com.eminokumus.quizapp.vo.Question
+import com.eminokumus.quizapp.vo.SolvedQuestion
 import javax.inject.Inject
 
 
@@ -21,9 +23,11 @@ class QuizViewModel @Inject constructor() : ViewModel() {
 
     private var answer = ""
 
-    private var answerList = mutableListOf<String>()
+    private var solvedQuestionList = mutableListOf<SolvedQuestion>()
 
-    var questionIndex = 0
+    private var questionStatus: QuestionStatus = QuestionStatus.WRONG
+
+    private var questionIndex = 0
 
     var questionList = listOf<Question>()
 
@@ -47,7 +51,10 @@ class QuizViewModel @Inject constructor() : ViewModel() {
 
     fun updateAnswer(givenAnswer: String){
         answer = givenAnswer
-        answerList.add(givenAnswer)
+    }
+
+    fun updateQuestionStatus(newStatus: QuestionStatus){
+        questionStatus = newStatus
     }
 
     fun isAnswerCorrect(): Boolean{
@@ -62,6 +69,14 @@ class QuizViewModel @Inject constructor() : ViewModel() {
             question.value?.answers?.get(3) -> return 3
         }
         return -1
+    }
+
+    fun addSolvedQuestionToList(){
+        solvedQuestionList.add(SolvedQuestion(question.value!!, answer, questionStatus))
+    }
+
+    fun getSolvedQuestionList(): MutableList<SolvedQuestion>{
+        return solvedQuestionList
     }
 
 
