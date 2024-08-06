@@ -5,16 +5,26 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.eminokumus.quizapp.databinding.ItemQuizzesBinding
 import com.eminokumus.quizapp.vo.Quiz
+import com.eminokumus.quizapp.vo.SolvedQuiz
 
-class QuizzesAdapter : RecyclerView.Adapter<QuizzesAdapter.MyViewHolder>() {
+class QuizzesAdapter(private val screenType: Int) : RecyclerView.Adapter<QuizzesAdapter.MyViewHolder>() {
 
-    var dataList = listOf<Quiz>()
+    var quizList = listOf<Quiz>()
         set(value) {
+            field = value
+            notifyDataSetChanged()
+
+        }
+
+    var solvedQuizList = listOf<SolvedQuiz>()
+        set(value){
             field = value
             notifyDataSetChanged()
         }
 
     var onQuizItemClickListener: OnQuizItemClickListener? = null
+
+    var onSolvedQuizItemClickListener: OnSolvedQuizItemClickListener? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -23,22 +33,39 @@ class QuizzesAdapter : RecyclerView.Adapter<QuizzesAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item = dataList[position]
-        holder.bind(item, onQuizItemClickListener)
+        if(screenType == QuizzesFragment.quizzesScreen){
+            val item = quizList[position]
+            holder.bindQuiz(item, onQuizItemClickListener)
+        }else if (screenType == QuizzesFragment.solvedQuizzesScreen){
+            val item = solvedQuizList[position]
+            holder.bindSolvedQuiz(item, onSolvedQuizItemClickListener)
+        }
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        return if (screenType == QuizzesFragment.quizzesScreen){
+            quizList.size
+        } else{
+            solvedQuizList.size
+        }
     }
 
      class MyViewHolder(private var binding: ItemQuizzesBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(quiz: Quiz, onQuizItemClickListener: OnQuizItemClickListener?){
+        fun bindQuiz(quiz: Quiz, onQuizItemClickListener: OnQuizItemClickListener?){
             binding.quizNameText.text = quiz.name
+
 
             binding.root.setOnClickListener {
                 onQuizItemClickListener?.onClick(quiz)
             }
         }
+         fun bindSolvedQuiz(solvedQuiz: SolvedQuiz, onSolvedQuizItemClickListener: OnSolvedQuizItemClickListener?){
+             binding.quizNameText.text = solvedQuiz.name
+
+             binding.root.setOnClickListener{
+                 onSolvedQuizItemClickListener?.onClick(solvedQuiz)
+             }
+         }
 
     }
 
@@ -48,4 +75,8 @@ class QuizzesAdapter : RecyclerView.Adapter<QuizzesAdapter.MyViewHolder>() {
 
 interface OnQuizItemClickListener {
     fun onClick(quiz: Quiz)
+}
+
+interface OnSolvedQuizItemClickListener{
+    fun onClick(solvedQuiz: SolvedQuiz)
 }

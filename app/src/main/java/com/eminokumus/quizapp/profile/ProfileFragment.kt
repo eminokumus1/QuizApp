@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.eminokumus.quizapp.MainActivity
+import com.eminokumus.quizapp.Quizzes.QuizzesFragment
 import com.eminokumus.quizapp.databinding.FragmentProfileBinding
 import javax.inject.Inject
 
@@ -47,7 +48,7 @@ class ProfileFragment : Fragment() {
                 findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileSettingsFragment())
             }
             solvedQuizzesBtn.setOnClickListener {
-
+                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToQuizzesFragment(QuizzesFragment.solvedQuizzesScreen))
             }
         }
     }
