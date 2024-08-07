@@ -37,6 +37,8 @@ class QuizzesFragment : Fragment() {
         val solvedQuizzesScreen = 1
     }
 
+    private lateinit var quizzesAdapter: QuizzesAdapter
+
 
 
 
@@ -52,6 +54,10 @@ class QuizzesFragment : Fragment() {
     ): View? {
         binding = FragmentQuizzesBinding.inflate(layoutInflater,container,false)
 
+        viewModel.quizListStateParcel?.let {stateParcelable ->
+            binding.quizzesRecycler.layoutManager?.onRestoreInstanceState(stateParcelable)
+            viewModel.quizListStateParcel=null
+        }
 
         return binding.root
     }
@@ -59,7 +65,7 @@ class QuizzesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val quizzesAdapter = QuizzesAdapter(screenType).also {
+        quizzesAdapter = QuizzesAdapter(screenType).also {
             if (screenType == quizzesScreen){
                 it.onQuizItemClickListener = object : OnQuizItemClickListener{
                     override fun onClick(quiz: Quiz) {
@@ -87,10 +93,18 @@ class QuizzesFragment : Fragment() {
         }
 
 
-
         binding.quizzesRecycler.adapter = quizzesAdapter
 
 
+
+
+    }
+
+    override fun onDestroyView() {
+        val recyclerState = binding.quizzesRecycler.layoutManager?.onSaveInstanceState()
+        recyclerState?.let { viewModel.saveQuizListState(recyclerState) }
+
+        super.onDestroyView()
     }
 
 

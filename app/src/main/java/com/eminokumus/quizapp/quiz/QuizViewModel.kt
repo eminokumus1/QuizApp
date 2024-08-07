@@ -73,6 +73,7 @@ class QuizViewModel @Inject constructor() : ViewModel() {
 
     fun addSolvedQuestionToList(){
         solvedQuestionList.add(SolvedQuestion(question.value!!, answer, questionStatus))
+        answer = ""
     }
 
     fun getSolvedQuestionList(): MutableList<SolvedQuestion>{

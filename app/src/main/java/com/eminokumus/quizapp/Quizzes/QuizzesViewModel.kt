@@ -1,22 +1,33 @@
 package com.eminokumus.quizapp.Quizzes
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.eminokumus.quizapp.vo.Question
 import com.eminokumus.quizapp.vo.Quiz
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class QuizzesViewModel @Inject constructor() : ViewModel() {
 
     private val _quizList = MutableLiveData<List<Quiz>>()
     val quizList: LiveData<List<Quiz>> get() = _quizList
 
+    var quizListStateParcel: Parcelable? = null
+
     init {
         _quizList.value = generateQuizList()
     }
 
+    fun saveQuizListState(parcel: Parcelable){
+        quizListStateParcel = parcel
+    }
+
 }
+
+
 
 private fun generateQuizList(): List<Quiz> {
     return listOf(
