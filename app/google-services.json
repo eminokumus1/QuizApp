@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "650083300424",
+    "project_id": "fir-quizapp-5a6e9",
+    "storage_bucket": "fir-quizapp-5a6e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650083300424:android:ac841f74a11ce250f1147d",
+        "android_client_info": {
+          "package_name": "com.eminokumus.quizapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQhR5ZENLB90bZ7t7s2bXS46jNe09S3Cc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

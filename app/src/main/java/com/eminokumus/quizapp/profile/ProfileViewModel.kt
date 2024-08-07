@@ -32,11 +32,11 @@ class ProfileViewModel @Inject constructor() : ViewModel() {
     }
 
     fun isEmailValid(email: String): Boolean{
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
     }
 
     fun isPasswordValid(userPassword: String): Boolean{
-        return userPassword.length >= 6
+        return userPassword.length >= 6 && userPassword.isNotEmpty()
     }
 
 }
