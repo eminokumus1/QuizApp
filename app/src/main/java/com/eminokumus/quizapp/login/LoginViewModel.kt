@@ -1,18 +1,24 @@
 package com.eminokumus.quizapp.login
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
 class LoginViewModel@Inject constructor(): ViewModel() {
-    private val userEmail = "eminokumus1@gmail.com"
-    private val userPassword = "123456"
 
-    private val _isUserValid = MutableLiveData<Boolean>()
-    val isUserValid: LiveData<Boolean> get() = _isUserValid
+    private val _isEmailValid = MutableLiveData<Boolean>()
+    val isEmailValid: LiveData<Boolean> get() = _isEmailValid
 
-    fun checkUser(email: String, password: String){
-        _isUserValid.value = email == userEmail && password == userPassword
+    private val _isPasswordValid = MutableLiveData<Boolean>()
+    val isPasswordValid: LiveData<Boolean> get() = _isPasswordValid
+
+    fun checkEmailFormat(email: String){
+        _isEmailValid.value = Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
+    }
+
+    fun checkPasswordFormat(userPassword: String){
+        _isPasswordValid.value = userPassword.length >= 6 && userPassword.isNotEmpty()
     }
 }
