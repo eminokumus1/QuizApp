@@ -41,6 +41,8 @@ class MainActivity : AppCompatActivity() {
             if (item.itemId != bottombar.selectedItemId){
                 navController.popBackStack(item.itemId, true, saveState = false)
                 navController.navigate(item.itemId)
+            }else if( item.itemId == bottombar.selectedItemId){
+                navController.navigate(item.itemId)
             }
             true
         }

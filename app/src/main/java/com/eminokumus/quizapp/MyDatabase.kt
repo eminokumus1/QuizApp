@@ -21,7 +21,8 @@ class MyDatabase @Inject constructor() {
     fun addSolvedQuizToList(solvedQuiz: SolvedQuiz){
         removeIfContains(solvedQuiz)
         mutableSolvedQuizList.add(solvedQuiz)
-        _solvedQuizList.value = mutableSolvedQuizList
+
+        _solvedQuizList.value = mutableSolvedQuizList.sortedBy { it.name }
     }
 
     private fun removeIfContains(solvedQuiz: SolvedQuiz) {
