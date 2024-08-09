@@ -4,11 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.ViewModelProvider
 import com.eminokumus.quizapp.MainActivity
 import com.eminokumus.quizapp.MyApplication
 import com.eminokumus.quizapp.databinding.ActivityLoginBinding
@@ -16,6 +17,7 @@ import com.eminokumus.quizapp.signup.SignupActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.DatabaseReference
 import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity() {
@@ -25,6 +27,10 @@ class LoginActivity : AppCompatActivity() {
     lateinit var viewModel: LoginViewModel
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var dbRef: DatabaseReference
+
+    private val handler = Handler(Looper.getMainLooper())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -38,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
 
         observeViewModel()
         checkFields()
+        checkLoggedInUser()
 
         setOnClickListeners()
 
@@ -72,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
         setSignupBtnOnClickListener()
         setRootOnClickListener()
         setLoginBtnOnClickListener()
+        setForgetPasswordBtnOnClickListener()
 
     }
 
@@ -84,8 +92,11 @@ class LoginActivity : AppCompatActivity() {
                 ).addOnCompleteListener {
                     if (it.isSuccessful){
                         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
+                        handler.postDelayed({
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                        }, 1000)
+
                     }else{
                         Log.e("error", it.exception.toString())
                     }
@@ -94,6 +105,13 @@ class LoginActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this, "Wrong email or password", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun setForgetPasswordBtnOnClickListener(){
+        binding.forgetPasswordButton.setOnClickListener{
+            val intent = Intent(this, ForgetPasswordActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -129,5 +147,12 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.isPasswordValid.value == true
     }
 
+    private fun checkLoggedInUser(){
+        if (auth.currentUser != null){
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
 
 }

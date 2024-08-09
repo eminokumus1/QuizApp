@@ -21,4 +21,5 @@ class LoginViewModel@Inject constructor(): ViewModel() {
     fun checkPasswordFormat(userPassword: String){
         _isPasswordValid.value = userPassword.length >= 6 && userPassword.isNotEmpty()
     }
+
 }

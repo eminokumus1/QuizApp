@@ -22,4 +22,8 @@
     <string name="settings">settings</string>
     <string name="username">username</string>
     <string name="email">Email</string>
+    <string name="sign_out">Sign out</string>
+    <string name="description_forget_password">Please enter your email address</string>
+    <string name="send_link">Send Link</string>
+    <string name="back_to_login">Back to Login</string>
 </resources>
