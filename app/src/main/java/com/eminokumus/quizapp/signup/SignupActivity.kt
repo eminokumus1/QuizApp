@@ -11,6 +11,7 @@ import androidx.core.widget.doAfterTextChanged
 import com.eminokumus.quizapp.MyApplication
 import com.eminokumus.quizapp.databinding.ActivitySignupBinding
 import com.eminokumus.quizapp.login.LoginActivity
+import com.eminokumus.quizapp.vo.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -42,8 +43,8 @@ class SignupActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        dbFirebase = Firebase.database.getReference("emails")
-        
+        dbFirebase = Firebase.database.getReference("user")
+
         setOnClickListeners()
     }
 
@@ -65,11 +66,12 @@ class SignupActivity : AppCompatActivity() {
                     binding.passwordEditText.text.toString()
                 ).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        addEmailToFirebase(binding.emailEditText.text.toString())
+                        addUserToFirebase(binding.emailEditText.text.toString())
                         Toast.makeText(this, "Signup completed", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.e("error", it.exception.toString())
-                        Toast.makeText(this,"This email is already in use", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "This email is already in use", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -127,9 +129,9 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun addEmailToFirebase(email: String){
-        val emailId = dbFirebase.push().key!!
-        dbFirebase.child(emailId).setValue(email)
 
+    private fun addUserToFirebase(userEmail: String) {
+        val userId = dbFirebase.push().key!!
+        dbFirebase.child(userEmail).setValue(User(userId, userEmail))
     }
 }

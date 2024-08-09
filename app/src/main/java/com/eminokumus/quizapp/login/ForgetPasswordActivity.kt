@@ -7,8 +7,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import com.eminokumus.quizapp.MyApplication
-import com.eminokumus.quizapp.R
 import com.eminokumus.quizapp.databinding.ActivityForgetPasswordBinding
+import com.eminokumus.quizapp.vo.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -17,7 +17,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import com.google.firebase.database.getValue
 import javax.inject.Inject
 
 class ForgetPasswordActivity : AppCompatActivity() {
@@ -41,7 +40,7 @@ class ForgetPasswordActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = Firebase.auth
-        dbFirebase = Firebase.database.getReference("emails")
+        dbFirebase = Firebase.database.getReference("user")
 
         observeEmail()
         checkEmail()
@@ -72,7 +71,10 @@ class ForgetPasswordActivity : AppCompatActivity() {
             dbFirebase.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (item in snapshot.children){
-                        item.getValue(String::class.java)?.let { emailList.add(it) }
+                        val user = item.getValue(User::class.java)
+                        if (user != null) {
+                            user.email?.let { it1 -> emailList.add(it1) }
+                        }
                     }
                     isEmailExists = emailList.contains(email)
                     sendResetEmail()
