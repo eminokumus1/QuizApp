@@ -16,8 +16,6 @@ class ProfileViewModel @Inject constructor() : ViewModel() {
     private val _username = MutableLiveData<String>()
     val username: LiveData<String> get() = _username
 
-    private val password = MutableLiveData<String>()
-
 
     fun changeUserEmail(newEmail: String) {
         _userEmail.value = newEmail
@@ -27,9 +25,6 @@ class ProfileViewModel @Inject constructor() : ViewModel() {
         _username.value = newUsername
     }
 
-    fun changePassword(newPassword: String) {
-        password.value = newPassword
-    }
 
     fun isEmailValid(email: String): Boolean{
         return Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()

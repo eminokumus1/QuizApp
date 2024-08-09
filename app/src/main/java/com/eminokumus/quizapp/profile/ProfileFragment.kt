@@ -12,15 +12,22 @@ import com.eminokumus.quizapp.MainActivity
 import com.eminokumus.quizapp.Quizzes.QuizzesFragment
 import com.eminokumus.quizapp.databinding.FragmentProfileBinding
 import com.eminokumus.quizapp.login.LoginActivity
+import com.eminokumus.quizapp.vo.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.database
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var dbFirebase: DatabaseReference
 
     @Inject
     lateinit var viewModel: ProfileViewModel
@@ -37,11 +44,32 @@ class ProfileFragment : Fragment() {
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
 
         auth = Firebase.auth
+        dbFirebase = Firebase.database.getReference("user")
+
+        observeViewModel()
+        updateFields()
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         return binding.root
+    }
+
+    private fun observeViewModel() {
+        observeEmail()
+        observeUsername()
+    }
+
+    private fun observeUsername() {
+        viewModel.username.observe(viewLifecycleOwner){newUsername->
+            binding.usernameText.text = newUsername
+        }
+    }
+
+    private fun observeEmail() {
+        viewModel.userEmail.observe(viewLifecycleOwner){newEmail->
+            binding.userEmailText.text = newEmail
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,6 +95,22 @@ class ProfileFragment : Fragment() {
 
             }
         }
+    }
+
+    private fun updateFields(){
+        val userId = auth.currentUser?.uid
+        dbFirebase.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = userId?.let { snapshot.child(it).getValue(User::class.java) }
+                viewModel.changeUsername(user?.username ?: "")
+                viewModel.changeUserEmail(user?.email ?: "")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
 
