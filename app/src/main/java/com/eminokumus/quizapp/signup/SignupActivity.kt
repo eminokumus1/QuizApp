@@ -8,19 +8,22 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.LifecycleOwner
 import com.eminokumus.quizapp.MyApplication
 import com.eminokumus.quizapp.databinding.ActivitySignupBinding
 import com.eminokumus.quizapp.login.LoginActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.database
 import javax.inject.Inject
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
 
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var dbFirebase: DatabaseReference
 
     @Inject
     lateinit var viewModel: SignupViewModel
@@ -39,6 +42,8 @@ class SignupActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
+        dbFirebase = Firebase.database.getReference("emails")
+        
         setOnClickListeners()
     }
 
@@ -46,6 +51,7 @@ class SignupActivity : AppCompatActivity() {
         binding.backButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         binding.root.setOnClickListener {
@@ -59,9 +65,11 @@ class SignupActivity : AppCompatActivity() {
                     binding.passwordEditText.text.toString()
                 ).addOnCompleteListener {
                     if (it.isSuccessful) {
+                        addEmailToFirebase(binding.emailEditText.text.toString())
                         Toast.makeText(this, "Signup completed", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.e("error", it.exception.toString())
+                        Toast.makeText(this,"This email is already in use", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -117,5 +125,11 @@ class SignupActivity : AppCompatActivity() {
                 binding.passwordEditText.text.toString()
             )
         }
+    }
+
+    private fun addEmailToFirebase(email: String){
+        val emailId = dbFirebase.push().key!!
+        dbFirebase.child(emailId).setValue(email)
+
     }
 }
