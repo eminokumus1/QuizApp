@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.eminokumus.quizapp.solvedquizdetails.QuestionStatus
 import com.eminokumus.quizapp.vo.Question
 import com.eminokumus.quizapp.vo.SolvedQuestion
+import com.eminokumus.quizapp.vo.SolvedQuiz
+import com.google.firebase.database.DatabaseReference
 import javax.inject.Inject
 
 
@@ -41,28 +43,28 @@ class QuizViewModel @Inject constructor() : ViewModel() {
     }
 
     fun updateQuestion() {
-        if (questionIndex < questionList.size ) {
+        if (questionIndex < questionList.size) {
             _question.value = questionList[questionIndex]
             questionIndex++
-        } else{
+        } else {
             _isListEnded.value = true
         }
     }
 
-    fun updateAnswer(givenAnswer: String){
+    fun updateAnswer(givenAnswer: String) {
         answer = givenAnswer
     }
 
-    fun updateQuestionStatus(newStatus: QuestionStatus){
+    fun updateQuestionStatus(newStatus: QuestionStatus) {
         questionStatus = newStatus
     }
 
-    fun isAnswerCorrect(): Boolean{
+    fun isAnswerCorrect(): Boolean {
         return answer == question.value?.correctAnswer
     }
 
-    fun findCorrectAnswerIndex(): Int{
-        when(question.value?.correctAnswer){
+    fun findCorrectAnswerIndex(): Int {
+        when (question.value?.correctAnswer) {
             question.value?.answers?.get(0) -> return 0
             question.value?.answers?.get(1) -> return 1
             question.value?.answers?.get(2) -> return 2
@@ -71,16 +73,17 @@ class QuizViewModel @Inject constructor() : ViewModel() {
         return -1
     }
 
-    fun addSolvedQuestionToList(){
+    fun addSolvedQuestionToList() {
         solvedQuestionList.add(SolvedQuestion(question.value!!, answer, questionStatus))
         answer = ""
     }
 
-    fun getSolvedQuestionList(): MutableList<SolvedQuestion>{
+    fun getSolvedQuestionList(): MutableList<SolvedQuestion> {
         return solvedQuestionList
     }
 
-
-
+    fun addSolvedQuizToFirebase(solvedQuizListRef: DatabaseReference, solvedQuiz: SolvedQuiz) {
+        solvedQuiz.name?.let { solvedQuizListRef.child(it).setValue(solvedQuiz) }
+    }
 }
 

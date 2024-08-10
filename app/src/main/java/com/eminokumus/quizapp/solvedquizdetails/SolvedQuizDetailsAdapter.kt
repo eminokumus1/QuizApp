@@ -33,9 +33,9 @@ class SolvedQuizDetailsAdapter: RecyclerView.Adapter<SolvedQuizDetailsAdapter.So
     inner class SolvedQuizViewHolder(private val binding: ItemSolvedQuizDetailsBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(solvedQuestion: SolvedQuestion){
             binding.run {
-                questionText.text = solvedQuestion.question.questionLine
-                answerText.text= "Your answer: ${ solvedQuestion.answer }"
-                correctAnswerText.text= "Correct answer: ${ solvedQuestion.question.correctAnswer }"
+                questionText.text = solvedQuestion.question?.questionLine
+                answerText.text= "Your answer: ${ solvedQuestion?.answer }"
+                correctAnswerText.text= "Correct answer: ${ solvedQuestion.question?.correctAnswer }"
                 questionStatusText.text= solvedQuestion.questionStatus.toString()
             }
             if (binding.questionStatusText.text == QuestionStatus.CORRECT.toString()){

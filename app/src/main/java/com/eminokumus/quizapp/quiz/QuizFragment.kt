@@ -10,12 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.eminokumus.quizapp.MyDatabase
 import com.eminokumus.quizapp.MainActivity
 import com.eminokumus.quizapp.R
 import com.eminokumus.quizapp.databinding.FragmentQuizBinding
 import com.eminokumus.quizapp.solvedquizdetails.QuestionStatus
 import com.eminokumus.quizapp.vo.SolvedQuiz
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.database
 import javax.inject.Inject
 
 
@@ -25,14 +29,17 @@ class QuizFragment : Fragment() {
     @Inject
     lateinit var viewModel: QuizViewModel
 
-    @Inject
-    lateinit var myDatabase: MyDatabase
 
     private val args: QuizFragmentArgs by navArgs()
 
     private val handler = Handler(Looper.getMainLooper())
 
     var checkedButton: View? = null
+
+    private lateinit var auth: FirebaseAuth
+
+    private lateinit var dbFirebase: DatabaseReference
+    private lateinit var solvedQuizListRef: DatabaseReference
 
 
     override fun onAttach(context: Context) {
@@ -49,10 +56,11 @@ class QuizFragment : Fragment() {
         binding = FragmentQuizBinding.inflate(layoutInflater, container, false)
 
         binding.viewModel = viewModel
-
-//        binding.question = args.quiz.questionList[0]
-
         binding.lifecycleOwner = this
+
+        auth = Firebase.auth
+        dbFirebase = Firebase.database.getReference("user")
+
 
 
         return binding.root
@@ -78,7 +86,14 @@ class QuizFragment : Fragment() {
         viewModel.isListEnded.observe(viewLifecycleOwner) { isEnded ->
             if (isEnded && findNavController().currentDestination?.id == R.id.quizFragment) {
                 val solvedQuiz = SolvedQuiz(args.quiz.name, viewModel.getSolvedQuestionList())
-                myDatabase.addSolvedQuizToList(solvedQuiz)
+                val user = auth.currentUser
+                if (user != null) {
+                    solvedQuizListRef = dbFirebase.child(user.uid).child("solvedQuizList")
+                    viewModel.addSolvedQuizToFirebase(
+                        solvedQuizListRef, solvedQuiz
+                    )
+                }
+
                 findNavController().navigate(
                     QuizFragmentDirections.actionQuizFragmentToScoreFragment(
                         args.quiz,

@@ -46,7 +46,7 @@ class SolvedQuizDetailsFragment : Fragment() {
             solvedQuizDetailsAdapter.data = it
         }
 
-        viewModel.updateSolvedQuestionList(args.solvedQuiz.solvedQuestionList)
+        args.solvedQuiz.solvedQuestionList?.let { viewModel.updateSolvedQuestionList(it) }
 
         binding.solvedQuizRecycler.adapter = solvedQuizDetailsAdapter
 
