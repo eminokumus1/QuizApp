@@ -27,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
     lateinit var viewModel: LoginViewModel
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var dbRef: DatabaseReference
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -99,6 +98,7 @@ class LoginActivity : AppCompatActivity() {
                         }, 1000)
 
                     }else{
+                        Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
                         Log.e("error", it.exception.toString())
                     }
 

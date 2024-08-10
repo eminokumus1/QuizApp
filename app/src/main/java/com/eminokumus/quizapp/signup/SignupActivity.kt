@@ -66,7 +66,8 @@ class SignupActivity : AppCompatActivity() {
                     binding.passwordEditText.text.toString()
                 ).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        addUserToFirebase(binding.emailEditText.text.toString())
+                        auth.currentUser?.let { it1 -> addUserToFirebase(it1.uid, binding.emailEditText.text.toString()) }
+                        auth.signOut()
                         Toast.makeText(this, "Signup completed", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.e("error", it.exception.toString())
@@ -130,8 +131,9 @@ class SignupActivity : AppCompatActivity() {
     }
 
 
-    private fun addUserToFirebase(userEmail: String) {
-        val userId = dbFirebase.push().key!!
-        dbFirebase.child(userEmail).setValue(User(userId, userEmail))
+    private fun addUserToFirebase(userId: String, userEmail: String) {
+        val user = User(userId, userEmail)
+        println("userId: ${user.userId}")
+        dbFirebase.child(userId).child("userData").setValue(User(userId, userEmail))
     }
 }
