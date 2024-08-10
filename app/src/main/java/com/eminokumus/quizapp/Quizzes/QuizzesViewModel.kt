@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.eminokumus.quizapp.vo.Question
 import com.eminokumus.quizapp.vo.Quiz
+import com.eminokumus.quizapp.vo.SolvedQuiz
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,6 +16,9 @@ class QuizzesViewModel @Inject constructor() : ViewModel() {
     private val _quizList = MutableLiveData<List<Quiz>>()
     val quizList: LiveData<List<Quiz>> get() = _quizList
 
+    private val _solvedQuizList = MutableLiveData<List<SolvedQuiz>>()
+    val solvedQuizList: LiveData<List<SolvedQuiz>> get() = _solvedQuizList
+
     var quizListStateParcel: Parcelable? = null
 
     init {
@@ -23,6 +27,10 @@ class QuizzesViewModel @Inject constructor() : ViewModel() {
 
     fun saveQuizListState(parcel: Parcelable){
         quizListStateParcel = parcel
+    }
+
+    fun updateSolvedQuizList(list: List<SolvedQuiz>){
+        _solvedQuizList.value = list
     }
 
 }
