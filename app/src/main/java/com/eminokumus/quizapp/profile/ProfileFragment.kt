@@ -3,6 +3,7 @@ package com.eminokumus.quizapp.profile
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,31 +47,14 @@ class ProfileFragment : Fragment() {
         auth = Firebase.auth
         dbFirebase = Firebase.database.getReference("user")
 
-        observeViewModel()
-        updateFields()
-
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        updateFields()
 
         return binding.root
     }
 
-    private fun observeViewModel() {
-        observeEmail()
-        observeUsername()
-    }
-
-    private fun observeUsername() {
-        viewModel.username.observe(viewLifecycleOwner){newUsername->
-            binding.usernameText.text = newUsername
-        }
-    }
-
-    private fun observeEmail() {
-        viewModel.userEmail.observe(viewLifecycleOwner){newEmail->
-            binding.userEmailText.text = newEmail
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -101,13 +85,13 @@ class ProfileFragment : Fragment() {
         val userId = auth.currentUser?.uid
         dbFirebase.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val user = userId?.let { snapshot.child(it).getValue(User::class.java) }
+                val user = userId?.let { snapshot.child(it).child("userData").getValue(User::class.java) }
                 viewModel.changeUsername(user?.username ?: "")
                 viewModel.changeUserEmail(user?.email ?: "")
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.e("error", error.toString())
             }
 
         })

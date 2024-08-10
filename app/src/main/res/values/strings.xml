@@ -26,4 +26,9 @@
     <string name="description_forget_password">Please enter your email address</string>
     <string name="send_link">Send Link</string>
     <string name="back_to_login">Back to Login</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="warning">WARNING:</string>
+    <string name="warning_description">Are you sure you want to delete your account?</string>
+    <string name="yes_delete_my_account">YES, delete my account</string>
+    <string name="no_keep_my_account">NO, keep my account</string>
 </resources>
