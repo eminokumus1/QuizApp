@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SolvedQuestion(
-    val question: Question,
-    val answer: String,
-    val questionStatus: QuestionStatus
+    val question: Question? = null,
+    val answer: String? = null,
+    val questionStatus: QuestionStatus? = null
 ) : Parcelable

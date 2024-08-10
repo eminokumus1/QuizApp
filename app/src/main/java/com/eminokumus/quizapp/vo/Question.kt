@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Question(
-    val questionLine: String,
-    val answers: List<String>,
-    val correctAnswer: String
+    val questionLine: String? = null,
+    val answers: List<String>? = null,
+    val correctAnswer: String? = null
 ):Parcelable
